@@ -1,2 +1,6 @@
 - Briefly explain the vulnerability and why the secure version is better at preventing repudiation than the insecure version.
 - What additional security mechanisms can you incorporate to prevent such attacks?
+
+Repudiation refers to the ability of users (or attackers) to deny their actions within a system, making it difficult to prove any wrongdoing without proper logging or auditing mechanisms. The insecure version of the application (insecure.js) lacks mechanisms to log actions performed by users, such as sending messages or accessing them. This omission creates a vulnerability where malicious activities cannot be traced back to the perpetrator, making accountability and incident response challenging.
+The secure version (secure.js) improves upon this by incorporating detailed logging for each request made to the server, including the actions of sending and retrieving messages. Each log entry includes a timestamp, the request method, the URL accessed, and the user's IP address. Additionally, for actions that involve sending messages, the log includes the message and the user who sent it. This approach significantly mitigates the repudiation threat by creating an audit trail that can be used to trace actions back to individual users, improving accountability and facilitating incident investigation.
+

@@ -1,1 +1,9 @@
 Briefly explain the vulnerability and why the secure version prevents the vulnerability.
+
+The insecure.js of the application had vulnerabilities primarily related to session management and cookie security:
+1. Lack of HttpOnly and Secure Cookie Flags: Initially, cookies were not configured with httpOnly: true, allowing client-side JavaScript to access session cookies. This poses a risk of Cross-Site Scripting (XSS) attacks, where an attacker could inject malicious scripts into the web application to steal cookies and potentially hijack user sessions.
+2. Lack of SameSite Cookie Attribute: Without the SameSite attribute, cookies could be sent along with requests initiated by third-party websites. This behavior opens up the application to Cross-Site Request Forgery (CSRF) attacks, where an attacker could trick a user into performing actions without their consent or knowledge, potentially leading to unauthorized operations.
+
+The secure version addresses these vulnerabilities through the following improvements:
+HttpOnly Cookie Flag: By setting cookie: { httpOnly: true }, the application ensures that cookies cannot be accessed through client-side scripts. This significantly reduces the risk of XSS attacks since attackers cannot easily steal cookies using injected scripts.
+Proper Use of SameSite Cookie Attribute: Correctly configuring the SameSite attribute (it should be set to strict, lax, or none instead of boolean true, with secure: true if none is used) restricts how cookies are sent with cross-site requests. This mitigates the risk of CSRF attacks by ensuring that cookies are not sent with requests originating from external sites, unless intended and configured securely (e.g., SameSite=None; Secure for cross-site cookie usage).
