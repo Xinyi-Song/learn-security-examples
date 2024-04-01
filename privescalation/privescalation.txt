@@ -1,0 +1,18 @@
+- Briefly explain the vulnerability and why the secure version prevents the
+vulnerability.
+
+The vulnerability in the insecure version of the code relates to privilege escalation due to improper authorization checks. 
+Specifically, the route /update-role allows any user, who can send a POST request with their userId and a newRole, to update their role. 
+This is insecure because the check if (user.role !== 'admin') merely confirms if the user, whose ID is provided in the request, is not an admin. 
+However, any authenticated user could potentially modify the request to include the userId of an admin user, thereby bypassing this check and escalating their privileges to an admin role without proper authentication and authorization.
+
+The secure version of the code addresses this vulnerability by implementing session-based authentication. 
+It introduces a check to ensure that a user session exists (if (!req.session.userId)) before proceeding with the role update. 
+This ensures that a user is authenticated and that their session ID is known and valid. 
+Additionally, the authorization check is based on the session data (const loggedInUser = users.find(u => u.id === Number(req.session.userId));), which verifies that the logged-in user (and not just any user ID passed in the request) has an admin role before allowing the role update. 
+This effectively prevents unauthorized users from escalating their privileges since they must be logged in as an admin to make changes to user roles.
+
+- What additional security mechanisms can you incorporate to prevent such
+attacks?
+Keeping detailed logs of user actions, including attempts to update roles or access sensitive endpoints. 
+This can help in identifying suspicious activities and can act as a deterrent for malicious actors.
