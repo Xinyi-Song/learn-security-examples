@@ -1,3 +1,13 @@
 Briefly explain the vulnerability and why the secure version prevents the vulnerability.
+The vulnerability in the insecure version of the code is due to NoSQL injection, where user input is directly used in the database query without any sanitization or validation. NoSQL injection can allow attackers to manipulate queries and potentially access or manipulate unauthorized data. In the insecure code snippet, the username received from the request query is directly used in the findOne method call, making it susceptible to injection attacks. An attacker could craft a malicious username parameter that could alter the query's logic, potentially leading to unauthorized information disclosure or data manipulation.
+The secure version of the code prevents this vulnerability by:
+Checking the type of the username to ensure it's a string, which adds a basic level of type validation.
+Sanitizing the username by removing non-alphanumeric characters using a regular expression. This limits the attacker's ability to insert special characters that could be used to craft malicious queries.
+
+
 Which CIA property does tampering violate?
+Tampering with data violates the Integrity property of the CIA (Confidentiality, Integrity, Availability) triad. Integrity ensures that data is accurate, consistent, and trustworthy over its entire lifecycle. NoSQL injection attacks could lead to unauthorized data modifications, violating data integrity by altering or deleting data, or inserting false data.
+
+
 What additional security mechanisms can you incorporate?
+Use parameterized queries or prepared statements where possible, although this technique is more relevant to SQL databases. For NoSQL databases, ensure that any query-building functions are used safely and follow the database's best practices for preventing injection.
